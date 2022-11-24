@@ -17,10 +17,12 @@ import sparespark.covid.statistics.presentation.components.MainErrorMessage
 import sparespark.covid.statistics.presentation.components.MainTitle
 import sparespark.covid.statistics.presentation.components.SubTitle
 import sparespark.covid.statistics.presentation.totalreport.components.TearDrop
+import sparespark.covid.statistics.presentation.window.WindowSize
 
 
 @Composable
 fun ProvinceReportScreen(
+    windowSize: WindowSize,
     viewModel: ProvinceReportViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -35,13 +37,13 @@ fun ProvinceReportScreen(
             color = Color.Black,
             strokeWidth = 8.dp
         )
-        if (state.error.isNotBlank()) MainErrorMessage(state.error)
+        if (state.error.isNotBlank()) MainErrorMessage(state.error, windowSize)
         /*
         * Data..
         *
         * */
         state.report?.reportData?.let { report ->
-            if (report.isEmpty()) MainErrorMessage(Constants.EMPTY_DATA)
+            if (report.isEmpty()) MainErrorMessage(Constants.EMPTY_DATA, windowSize)
             else LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -54,7 +56,8 @@ fun ProvinceReportScreen(
                                 "\nAt " +
                                 (report[0].region?.province ?: "Unknown Provinces") +
                                 "," +
-                                (report[0].region?.name ?: "Unknown Region")
+                                (report[0].region?.name ?: "Unknown Region"),
+                        windowSize
                     )
                     Column(
                         verticalArrangement = Arrangement.Center,
@@ -72,13 +75,15 @@ fun ProvinceReportScreen(
                                 report[0].active?.let { toStringDecimalFormatting(it) },
                                 "Active",
                                 isTopShape = false,
-                                isEndedShape = true
+                                isEndedShape = true,
+                                windowSize
                             )
                             TearDrop(
                                 report[0].confirmed?.let { toStringDecimalFormatting(it) },
                                 "Confirmed",
                                 isTopShape = false,
-                                isEndedShape = false
+                                isEndedShape = false,
+                                windowSize
                             )
                         }
                         Row(
@@ -93,18 +98,20 @@ fun ProvinceReportScreen(
                                 report[0].recovered?.let { toStringDecimalFormatting(it) },
                                 "Recovered",
                                 isTopShape = true,
-                                isEndedShape = true
+                                isEndedShape = true,
+                                windowSize
                             )
                             TearDrop(
                                 report[0].deaths?.let { toStringDecimalFormatting(it) },
                                 "Deaths",
                                 isTopShape = true,
-                                isEndedShape = false
+                                isEndedShape = false,
+                                windowSize
                             )
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                         if (report[0].last_update?.isNotBlank() == true)
-                            SubTitle(title = "Last update ${report[0].last_update}")
+                            SubTitle(title = "Last update ${report[0].last_update}", windowSize)
                     }
                 }
             }

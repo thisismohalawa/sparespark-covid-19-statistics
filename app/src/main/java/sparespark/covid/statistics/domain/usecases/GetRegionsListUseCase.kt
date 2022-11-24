@@ -23,7 +23,7 @@ class GetRegionsListUseCase @Inject constructor(
             * Magic..
             * */
             val reports = withContext(Dispatchers.IO) {
-                delay(200)
+                kotlinx.coroutines.delay(Constants.FETCH_DELAY_TIME)
                 return@withContext repository.getRegions()
             }
             emit(Resource.Success(reports))

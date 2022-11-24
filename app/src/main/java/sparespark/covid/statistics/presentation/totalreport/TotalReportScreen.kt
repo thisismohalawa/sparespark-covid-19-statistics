@@ -19,12 +19,14 @@ import sparespark.covid.statistics.presentation.components.MainTitle
 import sparespark.covid.statistics.presentation.components.SubTitle
 import sparespark.covid.statistics.presentation.totalreport.components.ActionButton
 import sparespark.covid.statistics.presentation.totalreport.components.TearDrop
+import sparespark.covid.statistics.presentation.window.WindowSize
 
 
 @Composable
 fun TotalReportScreen(
     navController: NavController,
-    viewModel: TotalReportViewModel = hiltViewModel()
+    windowSize: WindowSize,
+    viewModel: TotalReportViewModel = hiltViewModel(),
 ) {
 
     val state = viewModel.state.value
@@ -41,7 +43,7 @@ fun TotalReportScreen(
                 strokeWidth = 8.dp
             )
         if (state.error.isNotBlank())
-            MainErrorMessage(state.error)
+            MainErrorMessage(state.error, windowSize)
         /*
         * Data
         * */
@@ -53,7 +55,7 @@ fun TotalReportScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 item {
-                    MainTitle(title = stringResource(R.string.covid_statistics))
+                    MainTitle(title = stringResource(R.string.covid_statistics), windowSize)
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -70,13 +72,15 @@ fun TotalReportScreen(
                                 reportData.active?.let { toStringDecimalFormatting(it) },
                                 "Active",
                                 isTopShape = false,
-                                isEndedShape = true
+                                isEndedShape = true,
+                                windowSize
                             )
                             TearDrop(
                                 reportData.confirmed?.let { toStringDecimalFormatting(it) },
                                 "Confirmed",
                                 isTopShape = false,
-                                isEndedShape = false
+                                isEndedShape = false,
+                                windowSize
                             )
                         }
                         Row(
@@ -91,20 +95,22 @@ fun TotalReportScreen(
                                 reportData.recovered?.let { toStringDecimalFormatting(it) },
                                 "Recovered",
                                 isTopShape = true,
-                                isEndedShape = true
+                                isEndedShape = true,
+                                windowSize
                             )
                             TearDrop(
                                 reportData.deaths?.let { toStringDecimalFormatting(it) },
                                 "Deaths",
                                 isTopShape = true,
-                                isEndedShape = false
+                                isEndedShape = false,
+                                windowSize
                             )
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                         if (reportData.last_update?.isNotBlank() == true)
-                            SubTitle(title = "Last update ${reportData.last_update}")
+                            SubTitle(title = "Last update ${reportData.last_update}", windowSize)
                         Spacer(modifier = Modifier.height(10.dp))
-                        ActionButton(stringResource(id = R.string.dash_by_region)) {
+                        ActionButton(stringResource(id = R.string.dash_by_region), windowSize) {
                             navController.navigate(NavScreens.RegionsListScreen.route)
                         }
                         /*
@@ -113,7 +119,6 @@ fun TotalReportScreen(
                         *
                         *
                         * */
-
                     }
                 }
             }

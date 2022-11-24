@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sparespark.covid.statistics.core.Constants.RAPID_BASE_URL
-import sparespark.covid.statistics.core.Secret
+import sparespark.covid.statistics.core.SECRET_RAPID_API_KEY
 import sparespark.covid.statistics.data.remote.RapidApiService
 import sparespark.covid.statistics.data.repository.StatisticsRepositoryImpl
 import sparespark.covid.statistics.domain.repository.StatisticsRepository
@@ -27,7 +27,7 @@ object AppModule {
         val requestInterceptor = Interceptor { chain ->
             val request = chain.request()
                 .newBuilder()
-                .header("X-RapidAPI-Key", Secret.SECRET_RAPID_API_KEY)
+                .header("X-RapidAPI-Key", SECRET_RAPID_API_KEY)
                 .build()
             return@Interceptor chain.proceed(request)
         }
@@ -53,7 +53,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCurrentDate(): String {
+    fun provideTwoDaysAgoDate(): String {
         val cal = Calendar.getInstance()
         cal.add(Calendar.DATE, -2)
         return SimpleDateFormat("yyyy-MM-dd").format(cal.time)

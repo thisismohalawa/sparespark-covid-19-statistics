@@ -16,11 +16,13 @@ import sparespark.covid.statistics.presentation.NavScreens
 import sparespark.covid.statistics.presentation.components.MainErrorMessage
 import sparespark.covid.statistics.presentation.components.MainTitle
 import sparespark.covid.statistics.presentation.provinceslist.components.ProvincesGridList
+import sparespark.covid.statistics.presentation.window.WindowSize
 
 @ExperimentalFoundationApi
 @Composable
 fun ProvincesListScreen(
     navController: NavController,
+    windowSize: WindowSize,
     viewModel: ProvincesListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -37,7 +39,7 @@ fun ProvincesListScreen(
                 strokeWidth = 8.dp
             )
         if (state.error.isNotBlank())
-            MainErrorMessage(state.error)
+            MainErrorMessage(state.error, windowSize)
         /*
         *
         * */
@@ -48,7 +50,7 @@ fun ProvincesListScreen(
                     .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MainTitle(title = stringResource(R.string.select_province))
+                MainTitle(title = stringResource(R.string.select_province), windowSize)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 if (provinces.isNotEmpty())

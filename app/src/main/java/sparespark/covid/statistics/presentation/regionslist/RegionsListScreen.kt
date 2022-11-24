@@ -16,10 +16,12 @@ import sparespark.covid.statistics.presentation.NavScreens
 import sparespark.covid.statistics.presentation.components.MainErrorMessage
 import sparespark.covid.statistics.presentation.components.MainTitle
 import sparespark.covid.statistics.presentation.regionslist.components.RegionsGridList
+import sparespark.covid.statistics.presentation.window.WindowSize
 
 @Composable
 fun RegionsListScreen(
     navController: NavController,
+    windowSize: WindowSize,
     viewModel: RegionsListViewModel = hiltViewModel()
 
 ) {
@@ -38,7 +40,7 @@ fun RegionsListScreen(
                 strokeWidth = 8.dp
             )
         if (state.error.isNotBlank())
-            MainErrorMessage(msg = state.error)
+            MainErrorMessage(msg = state.error, windowSize)
         /*
         * Data..
         *
@@ -50,7 +52,7 @@ fun RegionsListScreen(
                     .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MainTitle(title = stringResource(R.string.select_region))
+                MainTitle(title = stringResource(R.string.select_region), windowSize)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 if (regionsList.isNotEmpty())
@@ -61,7 +63,7 @@ fun RegionsListScreen(
                                         "/${it.iso}"
                             )
                     }
-                else MainErrorMessage(Constants.EMPTY_DATA)
+                else MainErrorMessage(Constants.EMPTY_DATA, windowSize)
             }
         }
     }

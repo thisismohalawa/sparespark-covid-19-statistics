@@ -1,6 +1,7 @@
 package sparespark.covid.statistics.domain.usecases
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 class GetProvinceReportUseCase @Inject constructor(
     private val repository: StatisticsRepository,
-    private val currentDate: String
+    private val twoDaysAgo: String
 ) {
     operator fun invoke(iso: String, regionProvince: String): Flow<Resource<ReportResponse>> =
         flow {
@@ -25,11 +26,11 @@ class GetProvinceReportUseCase @Inject constructor(
                 *
                 * */
                 val report = withContext(Dispatchers.IO) {
-                    kotlinx.coroutines.delay(200)
+                    delay(Constants.FETCH_DELAY_TIME)
                     return@withContext repository.getProvinceReport(
                         iso,
                         regionProvince,
-                        currentDate
+                        twoDaysAgo
                     )
                 }
                 emit(Resource.Success(report))

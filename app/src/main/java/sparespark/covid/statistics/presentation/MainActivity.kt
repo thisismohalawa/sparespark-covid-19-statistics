@@ -13,6 +13,7 @@ import sparespark.covid.statistics.presentation.provincereport.ProvinceReportScr
 import sparespark.covid.statistics.presentation.provinceslist.ProvincesListScreen
 import sparespark.covid.statistics.presentation.regionslist.RegionsListScreen
 import sparespark.covid.statistics.presentation.totalreport.TotalReportScreen
+import sparespark.covid.statistics.presentation.window.rememberWindowSize
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -21,6 +22,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val window = rememberWindowSize()
+
             NavHost(
                 navController = navController, startDestination = NavScreens.TotalReportScreen.route
             ) {
@@ -31,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 composable(
                     route = NavScreens.TotalReportScreen.route
                 ) {
-                    TotalReportScreen(navController)
+                    TotalReportScreen(navController,window)
                 }
                 /*
                 *  SCREEN 2 :
@@ -41,7 +44,7 @@ class MainActivity : ComponentActivity() {
                 composable(
                     route = NavScreens.RegionsListScreen.route
                 ) {
-                    RegionsListScreen(navController)
+                    RegionsListScreen(navController,window)
                 }
                 /*
                 * SCREEN 3:
@@ -51,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     route = NavScreens.ProvincesListScreen.route +
                             "/{${Constants.PARAM_ISO_KEY}}"
                 ) {
-                    ProvincesListScreen(navController)
+                    ProvincesListScreen(navController,window)
                 }
                 /*
                 * SCREEN 4 :
@@ -62,7 +65,7 @@ class MainActivity : ComponentActivity() {
                             "/{${Constants.PARAM_ISO_KEY}}" +
                             "/{${Constants.PARAM_PROVINCE_KEY}}"
                 ) {
-                    ProvinceReportScreen()
+                    ProvinceReportScreen(window)
                 }
 
             }

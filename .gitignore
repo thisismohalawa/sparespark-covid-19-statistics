@@ -16,6 +16,5 @@ local.properties
 
 /app/src/main/java/sparespark/covid/statistics/core/Constants.kt
 /app/src/main/java/sparespark/covid/statistics/core/Secret.kt
-/app/src/main/java/sparespark/covid/statistics/data/di/AppModule.kt.kt
 /app/src/main/java/sparespark/covid/statistics/presentation/totalreport/components/TearDropShape.kt
 

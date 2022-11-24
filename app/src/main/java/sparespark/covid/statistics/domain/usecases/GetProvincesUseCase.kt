@@ -25,7 +25,7 @@ class GetProvincesUseCase @Inject constructor(
             *
             * */
             val provinces = withContext(Dispatchers.IO) {
-                delay(200)
+                delay(Constants.FETCH_DELAY_TIME)
                 return@withContext repository.getProvinces(iso)
             }
             emit(Resource.Success(provinces))
