@@ -56,7 +56,7 @@ fun RegionsListScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 if (regionsList.isNotEmpty())
-                    RegionsGridList(regionsList) {
+                    RegionsGridList(regionsList,windowSize) {
                         if (it.iso?.isNotBlank() == true)
                             navController.navigate(
                                 NavScreens.ProvincesListScreen.route +

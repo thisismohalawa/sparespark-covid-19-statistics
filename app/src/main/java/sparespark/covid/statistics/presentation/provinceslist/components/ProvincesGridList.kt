@@ -11,6 +11,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,15 +24,24 @@ import androidx.compose.ui.unit.sp
 import sparespark.covid.statistics.R
 import sparespark.covid.statistics.data.model.province.ProvincesData
 import sparespark.covid.statistics.presentation.components.TangoSansFont
+import sparespark.covid.statistics.presentation.window.WindowSize
+import sparespark.covid.statistics.presentation.window.WindowType
 
 @ExperimentalFoundationApi
 @Composable
 fun ProvincesGridList(
     provinces: List<ProvincesData>,
+    windowSize: WindowSize,
     onItemClick: (ProvincesData) -> Unit
 ) {
+    val cellCount by remember(key1 = windowSize) {
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 2 else 3)
+    }
+    val titleSize by remember(key1 = windowSize) {
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 12.sp else 24.sp)
+    }
     LazyVerticalGrid(
-        GridCells.Fixed(2),
+        GridCells.Fixed(cellCount),
         content = {
             items(provinces.size) { i ->
                 val provName = provinces[i].province
@@ -48,7 +60,7 @@ fun ProvincesGridList(
                         text = if (!provName.isNullOrEmpty()) provName else "Unknown Province",
                         textAlign = TextAlign.Center,
                         maxLines = 1,
-                        fontSize = 10.sp,
+                        fontSize = titleSize,
                         fontFamily = TangoSansFont
                     )
                 }

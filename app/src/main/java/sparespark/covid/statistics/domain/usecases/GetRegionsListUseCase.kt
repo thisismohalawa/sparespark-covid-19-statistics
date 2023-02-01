@@ -20,12 +20,10 @@ class GetRegionsListUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
             /*
-            * Magic..
+            * Emitting multiple data values over period time.
+            *
             * */
-            val reports = withContext(Dispatchers.IO) {
-                kotlinx.coroutines.delay(Constants.FETCH_DELAY_TIME)
-                return@withContext repository.getRegions()
-            }
+            val reports = getRegions()
             emit(Resource.Success(reports))
 
         } catch (e: HttpException) {
@@ -33,5 +31,10 @@ class GetRegionsListUseCase @Inject constructor(
         } catch (e: IOException) {
             emit(Resource.Error(e.message ?: Constants.NO_INTERNET_CONNECTION))
         }
+    }
+
+    private suspend fun getRegions() = withContext(Dispatchers.IO) {
+        delay(Constants.FETCH_DELAY_TIME)
+        repository.getRegions()
     }
 }

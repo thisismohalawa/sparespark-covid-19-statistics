@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -11,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 import sparespark.covid.statistics.R
 import sparespark.covid.statistics.core.toStringDecimalFormatting
 import sparespark.covid.statistics.presentation.NavScreens
@@ -21,7 +23,6 @@ import sparespark.covid.statistics.presentation.totalreport.components.ActionBut
 import sparespark.covid.statistics.presentation.totalreport.components.TearDrop
 import sparespark.covid.statistics.presentation.window.WindowSize
 
-
 @Composable
 fun TotalReportScreen(
     navController: NavController,
@@ -30,10 +31,32 @@ fun TotalReportScreen(
 ) {
 
     val state = viewModel.state.value
+
     Box(modifier = Modifier.fillMaxSize()) {
         /*
-        * Views..
+        *
+        *  Event trigger
+        *
+        *  LaunchedEffect(key1 = Unit) {
+        *  lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+        *  launch{
+        *  action...
+        *  }}}
+        *
         * */
+        LaunchedEffect(key1 = Unit) {
+            launch {
+                viewModel.eventTrigger(TotalReportEvent.CheckForAppUpdates)
+            }
+        }
+        /*
+        * OnResumed
+        *
+        * */
+        OnResumedLifecycleTrigger {
+            viewModel.eventTrigger(TotalReportEvent.CheckIfAppUpdatesIsResumed)
+        }
+
         if (state.isLoading)
             CircularProgressIndicator(
                 modifier = Modifier
@@ -46,6 +69,7 @@ fun TotalReportScreen(
             MainErrorMessage(state.error, windowSize)
         /*
         * Data
+        *
         * */
         state.report?.totalReportData?.let { reportData ->
             LazyColumn(

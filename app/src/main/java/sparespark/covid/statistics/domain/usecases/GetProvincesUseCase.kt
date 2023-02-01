@@ -20,14 +20,8 @@ class GetProvincesUseCase @Inject constructor(
     operator fun invoke(iso: String): Flow<Resource<ProvincesResponse>> = flow {
         try {
             emit(Resource.Loading())
-            /*
-            * Magic...
-            *
-            * */
-            val provinces = withContext(Dispatchers.IO) {
-                delay(Constants.FETCH_DELAY_TIME)
-                return@withContext repository.getProvinces(iso)
-            }
+
+            val provinces = getProvinces(iso)
             emit(Resource.Success(provinces))
 
         } catch (e: HttpException) {
@@ -36,5 +30,10 @@ class GetProvincesUseCase @Inject constructor(
             emit(Resource.Error(e.message ?: Constants.NO_INTERNET_CONNECTION))
         }
 
+    }
+
+    private suspend fun getProvinces(iso: String) = withContext(Dispatchers.IO) {
+        delay(Constants.FETCH_DELAY_TIME)
+        repository.getProvinces(iso)
     }
 }

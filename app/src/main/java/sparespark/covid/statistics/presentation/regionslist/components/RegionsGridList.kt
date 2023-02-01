@@ -10,6 +10,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,14 +23,24 @@ import androidx.compose.ui.unit.sp
 import sparespark.covid.statistics.R
 import sparespark.covid.statistics.data.model.region.RegionsData
 import sparespark.covid.statistics.presentation.components.TangoSansFont
+import sparespark.covid.statistics.presentation.window.WindowSize
+import sparespark.covid.statistics.presentation.window.WindowType
 
 @Composable
 fun RegionsGridList(
     regions: List<RegionsData>,
+    windowSize: WindowSize,
     onItemClick: (RegionsData) -> Unit
 ) {
+    val cellCount by remember(key1 = windowSize) {
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 2 else 3)
+    }
+    val titleSize by remember(key1 = windowSize) {
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 12.sp else 24.sp)
+    }
+
     LazyVerticalGrid(
-        GridCells.Fixed(2),
+        GridCells.Fixed(cellCount),
         content = {
             items(regions.size) { i ->
                 val regionName = regions[i].name
@@ -47,7 +60,7 @@ fun RegionsGridList(
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         fontFamily = TangoSansFont,
-                        fontSize = 10.sp
+                        fontSize = titleSize
                     )
                 }
             }

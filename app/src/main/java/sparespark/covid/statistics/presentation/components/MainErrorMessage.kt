@@ -37,12 +37,13 @@ fun MainErrorMessage(msg: String, windowSize: WindowSize) {
     Error Message
 
     * */
-    val subTitleSize by remember(key1 = windowSize) {
-        mutableStateOf(if (windowSize.width == WindowType.Compact) 15.sp else 25.sp)
-    }
     val titleSize by remember(key1 = windowSize) {
-        mutableStateOf(if (windowSize.width == WindowType.Compact) 70.sp else 80.sp)
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 70.sp else 90.sp)
     }
+    val subTitleSize by remember(key1 = windowSize) {
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 15.sp else 30.sp)
+    }
+
     val showIcon by remember(key1 = windowSize) {
         mutableStateOf(windowSize.width == WindowType.Expanded)
     }

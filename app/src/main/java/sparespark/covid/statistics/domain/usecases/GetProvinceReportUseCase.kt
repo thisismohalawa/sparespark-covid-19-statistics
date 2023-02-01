@@ -14,25 +14,13 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetProvinceReportUseCase @Inject constructor(
-    private val repository: StatisticsRepository,
-    private val twoDaysAgo: String
+    private val repository: StatisticsRepository, private val twoDaysAgo: String
 ) {
     operator fun invoke(iso: String, regionProvince: String): Flow<Resource<ReportResponse>> =
         flow {
             try {
                 emit(Resource.Loading())
-                /*
-                * Magic..
-                *
-                * */
-                val report = withContext(Dispatchers.IO) {
-                    delay(Constants.FETCH_DELAY_TIME)
-                    return@withContext repository.getProvinceReport(
-                        iso,
-                        regionProvince,
-                        twoDaysAgo
-                    )
-                }
+                val report = getProvinceReport(iso, regionProvince)
                 emit(Resource.Success(report))
 
             } catch (e: HttpException) {
@@ -40,5 +28,13 @@ class GetProvinceReportUseCase @Inject constructor(
             } catch (e: IOException) {
                 emit(Resource.Error(e.message ?: Constants.NO_INTERNET_CONNECTION))
             }
+        }
+
+    private suspend fun getProvinceReport(iso: String, regionProvince: String) =
+        withContext(Dispatchers.IO) {
+            delay(Constants.FETCH_DELAY_TIME)
+            repository.getProvinceReport(
+                iso, regionProvince, twoDaysAgo
+            )
         }
 }

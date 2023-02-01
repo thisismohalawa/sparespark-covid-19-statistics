@@ -54,7 +54,7 @@ fun ProvincesListScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 if (provinces.isNotEmpty())
-                    ProvincesGridList(provinces = provinces) {
+                    ProvincesGridList(provinces = provinces, windowSize) {
                         if (it.iso?.isNotBlank() == true &&
                             it.province?.isNotBlank() == true
                         )

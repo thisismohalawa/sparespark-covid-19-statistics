@@ -1,5 +1,7 @@
 package sparespark.covid.statistics.data.di
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +15,7 @@ import sparespark.covid.statistics.core.SECRET_RAPID_API_KEY
 import sparespark.covid.statistics.data.remote.RapidApiService
 import sparespark.covid.statistics.data.repository.StatisticsRepositoryImpl
 import sparespark.covid.statistics.domain.repository.StatisticsRepository
+import sparespark.covid.statistics.presentation.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Singleton
@@ -51,6 +54,7 @@ object AppModule {
         return StatisticsRepositoryImpl(apiService)
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Provides
     @Singleton
     fun provideTwoDaysAgoDate(): String {
@@ -58,4 +62,5 @@ object AppModule {
         cal.add(Calendar.DATE, -2)
         return SimpleDateFormat("yyyy-MM-dd").format(cal.time)
     }
+
 }

@@ -18,7 +18,7 @@ import sparespark.covid.statistics.presentation.window.WindowType
 @Composable
 fun MainTitle(title: String, windowSize: WindowSize) {
     val titleSize by remember(key1 = windowSize) {
-        mutableStateOf(if (windowSize.width == WindowType.Compact) 20.sp else 30.sp)
+        mutableStateOf(if (windowSize.width == WindowType.Compact) 20.sp else 35.sp)
     }
     Text(
         text = title,

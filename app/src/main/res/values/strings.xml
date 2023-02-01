@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Covid-19-statistics</string>
+    <string name="app_name">COVID-19-updates</string>
     <string name="covid_statistics">Total\nCOVID-19 statistics</string>
     <string name="covid_articles">Updated COVID-19 global articles</string>
     <string name="dash_by_region">Dashboard by region ?</string>
